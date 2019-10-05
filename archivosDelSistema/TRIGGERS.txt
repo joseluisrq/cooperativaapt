@@ -1,0 +1,5 @@
+INSERT INTO bitacoraproducto(nombre_n,nombre_v,descripcion_n,descripcion_v,fecha_n,fecha_v)
+VALUES(NEW.nombre,old.nombre,NEW.descripcion,old.descripcion,NEW.fecha,old.fecha);
+
+
+CREATE TRIGGER `insertarcredito` AFTER INSERT ON `creditos` FOR EACH ROW INSERT INTO creditos_bitacora(idcliente_n,idusuario_n,numeroprestamo_n,idkiva_n,montodesembolsado_n,fechadesembolso_n,numerocuotas_n,tipocambio_n,tasa_n,estado_n,periodo_n,condicion) VALUES(NEW.idcliente,NEW.idusuario,NEW.numeroprestamo,NEW.idkiva,NEW.montodesembolsado,NEW.fechadesembolso,NEW.numerocuotas,NEW.tipocambio,NEW.tasa,NEW.estado,NEW.periodo,'NUEVO CREDITO')

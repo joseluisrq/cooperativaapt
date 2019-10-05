@@ -1,0 +1,21 @@
+Cliente
+
+estado 0:inactivo(eliminado) | 1:activo
+estadocredito 0: sincredito | 1: concredito
+
+El cliente inactivo no se muestra en la tabla
+El cliente que enta el estadocredito 1 debe mostrar CON CREDITO (danger) 
+y el que tenga estadocredito 0 SIN CREDITO(success)
+
+____________________________
+____________________________
+
+CREDITO
+estado 0 credito desactivado(eliminado)| 1 credito activo | 2 credito terminado(finalizado)
+periodo 1 mensual| 2 bimestral| 3 trimestral | 6 semestral | 12 anual
+
+_______________________________
+_________________________________
+CUOTA
+estado 0 sin pagar| 1 pagada
+

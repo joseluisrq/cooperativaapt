@@ -1,0 +1,6 @@
+1.actualizar credito
+2.actualizar cuotas
+3. Vista de Cambios 
+4.si el dni ya esta registrado que no deje ingresar
+5.revisar el suario insertar
+6. porque elimina dandole 2 click los creditos
