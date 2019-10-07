@@ -194,7 +194,7 @@ export default {
     data (){
             return {
                 //ruta
-                 ruta: 'http://127.0.0.1:8000/',
+                 ruta: '',
                
                 dataC:[],//detalle de cuota
 
@@ -279,10 +279,10 @@ export default {
             },
 
             generarboucher(){
-                window.open(this.ruta + '/credito/detallecuotapdf/'+this.identificadorcuota+'','_blank');
+                window.open('/credito/detallecuotapdf/'+this.identificadorcuota+'','_blank');
             },
             generarboucherPorcion(){
-                window.open(this.ruta + '/credito/detalleporcioncuotapdf/'+this.identificadorcuota+'','_blank');
+                window.open('/credito/detalleporcioncuotapdf/'+this.identificadorcuota+'','_blank');
             },
 
             //pagar porcion cuota

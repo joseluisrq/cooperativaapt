@@ -151,7 +151,7 @@
                                 
                                 <!-- Modal body -->
                                 <div class="modal-body card">
-                                    <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                                    <form action="" method="put" enctype="multipart/form-data" class="form-horizontal">
 
                                     <div class="row">
                                         <div class="col-md-3 form-group">

@@ -15,7 +15,7 @@
 export default {
     data(){
         return{
-              ruta: 'http://127.0.0.1:8000',
+              ruta: '',
               arrayCreditosMora:[],
         }
     },
