@@ -134,8 +134,10 @@
                                     <th class="font-weight-bold">Opciones</th>  
                                                                      
                                     <th class="font-weight-bold">Fecha de Pago/ Canceló</th>
-                                    <th class="font-weight-bold">Cuota Dolares</th>
-                                    <th class="font-weight-bold">Cuota Soles</th>
+                                    <th class="font-weight-bold">Cuota Neto($)</th>
+                                    <th class="font-weight-bold">Interes($)  <span class="text-primary">S/ </span></th>
+                                     <th class="font-weight-bold">Monto a Pagar($)  <span class="text-primary">S/ </span></th>
+                                  
                                     <th class="font-weight-bold">Saldo Pendiente</th>                                    
                                     <th class="font-weight-bold">Pago</th>
                                      <th class="font-weight-bold">Cajero</th>
@@ -188,9 +190,17 @@
                                      <td >
                                         $ {{cuotanuevo.monto}} 
                                      </td>
-                                     <td >
-                                         <span class="badge badge-primary" style="font-size:12px;"> S/ {{ parseFloat(cuotanuevo.monto * tipocambio).toFixed(2)	}}</span>
+                                      <td >
+                                        $ {{interesxCuota.toFixed(2)}}  
+                                         <span class="badge badge-primary" style="font-size:12px;"> 
+                                             S/ {{(parseFloat(interesxCuota) * tipocambio).toFixed(2)	}}</span>
                                      </td>
+                                      <td >
+                                        $ {{((parseFloat(cuotanuevo.monto)+parseFloat(interesxCuota))).toFixed(2)}} 
+                                          <span class="badge badge-primary" style="font-size:12px;"> 
+                                             S/ {{ ((parseFloat(cuotanuevo.monto)+parseFloat(interesxCuota)) * tipocambio).toFixed(2)	}}</span>
+                                     </td>
+                                   
                                      
                                     <td v-text="cuotanuevo.saldopendiente"></td>
                                    
@@ -264,7 +274,10 @@
                                         <select class="form-control col-md-4" v-model="criterio">
                                         <option value="numeroprestamo">Número de prestamo</option>
                                         <option value="idkiva">ID kiva</option>
-                                         <option value="dni">DNI Cliente</option>
+                                        <option value="dni">DNI Cliente</option>
+                                         <option value="nombre">Nombre de Cliente</option>
+                                          <option value="apellidopaterno">Apellido Paterno</option>
+                                           <option value="apellidomaterno">Apellido Materno</option>
                                         <option value="fechadesembolso">Fecha de Desembolso </option>
                                         
                                         </select>
@@ -530,7 +543,8 @@ import vSelect from 'vue-select'
                 offset : 3,
                 criterio : 'numeroprestamo', //inicializamos el criterio de busqueda
                 buscar : '',
-                hoy:''
+                hoy:'',
+                interesxCuota:0,
             }
         },
         components:{
@@ -585,7 +599,7 @@ import vSelect from 'vue-select'
             },
 
             cargarPdf(){
-                window.open(this.ruta + '/credito/listarpdf','_blank');
+                window.open('/credito/listarpdf','_blank');
             },
               cambiarPagina(page,buscar,criterio){
                 let me = this;
@@ -595,21 +609,21 @@ import vSelect from 'vue-select'
                 me.historialcredito(page,buscar,criterio);
             },
             generarboucher(idcuota){
-                window.open(this.ruta + '/credito/detallecuotapdf/'+idcuota+'','_blank');
+                window.open('/credito/detallecuotapdf/'+idcuota+'','_blank');
             },
             generarboucherPorcion(idporcion){
-                window.open(this.ruta + '/credito/porcionIdpdf/'+idporcion+'','_blank');
+                window.open('/credito/porcionIdpdf/'+idporcion+'','_blank');
             },
             pdfDetallecuota(idcredito){
-                 window.open(this.ruta + '/credito/detallecreditopdf/'+idcredito,'_blank');
+                 window.open('/credito/detallecreditopdf/'+idcredito,'_blank');
             },
             pdfDetallecuotaBoleta(idcredito){
-                 window.open(this.ruta + '/credito/boletacreditopdf/'+idcredito,'_blank');
+                 window.open('/credito/boletacreditopdf/'+idcredito,'_blank');
             },
             historialcredito (page,buscar,criterio){
                 let me=this;
                 me.listado=2;
-                var url= this.ruta + '/credito?page=' + page + '&buscar='+ buscar + '&criterio='+ criterio;
+                var url= '/credito?page=' + page + '&buscar='+ buscar + '&criterio='+ criterio;
                 axios.get(url).then(function (response) {
                     var respuesta= response.data;
                     me.arrayCredito = respuesta.creditos.data;
@@ -623,11 +637,12 @@ import vSelect from 'vue-select'
             listarCredito (idkiva){
                  
                 let me=this;
-                var url= this.ruta+'/credito/creditosCliente?idkiva='+idkiva;
+                var url= '/credito/creditosCliente?idkiva='+idkiva;
                 axios.get(url).then(function (response) {
                     var respuesta= response.data;
                     me.arrayCredito = respuesta.creditos;
                      me.arrayCuotasnuevo = respuesta.cuotas;
+                    me.interesxCuota=(me.arrayCredito[0].montodesembolsado*(me.arrayCredito[0].tasa/100))/me.arrayCredito[0].numerocuotas;
                     me.tipocambio=me.arrayCredito[0].tipocambio;
 
                     me.montofijo=(me.arrayCredito[0].montodesembolsado/me.arrayCredito[0].numerocuotas).toFixed(2);
@@ -645,7 +660,7 @@ import vSelect from 'vue-select'
                
                 let me=this;
                 me.arrayPorciones=[];
-                var url=this.ruta+'/credito/listarPorcion?idcuota='+idcuota;
+                var url='/credito/listarPorcion?idcuota='+idcuota;
                 axios.get(url).then(function (response) {
                     var respuesta=response.data;
                     me.arrayPorciones=respuesta.porciones;

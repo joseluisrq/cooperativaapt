@@ -305,7 +305,7 @@ export default {
                selectCliente(search, loading){
                  let me=this;
                  loading(true)
-                var url= this.ruta+'/cliente/todosselectCliente?filtro='+search;
+                var url= '/cliente/todosselectCliente?filtro='+search;
                 axios.get(url).then(function (response) {
                     let respuesta= response.data;
                     q:search;
@@ -376,7 +376,7 @@ export default {
 
       this.calendarEvents = [];
 
-      axios.get(this.ruta+'/cuota')
+      axios.get('/cuota')
         .then(res => {
           let cuotas = res.data.cuotas;
           let fechahoy = res.data.fechahoy;
@@ -413,7 +413,7 @@ export default {
     },
     obtenerCuotaDeCliente: function(){
 
-      axios.get(this.ruta+'/cuota?dni='+this.dniBuscar)
+      axios.get('/cuota?dni='+this.dniBuscar)
         .then(res => {
           let cuotas = res.data.cuotas;
           let fechahoy = res.data.fechahoy;

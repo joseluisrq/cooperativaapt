@@ -44,13 +44,56 @@
                          
                      </template>
        @elseif (Auth::user()->idrol == 2)
+
+                     <template v-if="menu==1">
+                            <cuota :ruta="ruta"></cuota>
+                     </template>
+                                       
+                     
+                     <template v-if="menu==3">
+                            <credito :ruta="ruta"></credito>
+                     </template>
+                     
+                     <template v-if="menu==4">
+                     
+                            <cliente :ruta="ruta" :rol="2"></cliente>
+                     </template>
+                                   
+                     <template v-if="menu==9">
+                            <configcredito :ruta="ruta"></configcredito>     
+                     </template>
+              
+                     
+                     </template>
               
        @elseif (Auth::user()->idrol == 3)
               
 
-                     <template v-if="menu==3">
-                            <cliente :ruta="ruta"></cliente>
-                     </template>
+                    
+       <template v-if="menu==1">
+                     <cuota :ruta="ruta"></cuota>
+              </template>
+              
+              <template v-if="menu==2">
+                     <agregarcredito :ruta="ruta"></agregarcredito>
+              </template>
+              
+              <template v-if="menu==3">
+                     <credito :ruta="ruta"></credito>
+              </template>
+              
+              <template v-if="menu==4">
+                   
+                     <cliente :ruta="ruta"></cliente>
+              </template>
+              
+          
+              <template v-if="menu==9">
+                     <configcredito :ruta="ruta"></configcredito>     
+              </template>
+             
+                  
+              </template>
                      
        @else
        

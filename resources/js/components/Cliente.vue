@@ -60,25 +60,40 @@
                         <tbody>
                             <tr v-for="persona in arrayPersona" :key="persona.id">
                             <td class="py-1">
-                                        <button type="button" @click="abrirModal('persona','actualizar',persona)" class="btn btn-warning btn-sm" title="EDITAR CLIENTE">
-                                          <i class="fa fa-pencil"></i>
-                                        </button>&nbsp;
-                                       
-                                        <button type="button" class="btn btn-danger btn-sm" @click="desactivarCliente(persona.id,persona.estadocredito)" title="ELIMINAR CLIENTE">
-                                            <i class="fa fa-trash-o"></i>
-                                        </button>
-                                      
-
-                                        <template v-if="persona.estadocredito==1">
-                                            <button type="button" class="btn btn-primary btn-sm" @click="showpagocuota=true;personacredito_id=persona.id" title="PAGAR CUOTA">
-                                               <i class="fa fa-dollar"></i>
-                                            </button>
+                                        <template v-if="rol==2">
+                                            <template v-if="persona.estadocredito==1">
+                                                <button type="button" class="btn btn-primary btn-sm" @click="showpagocuota=true;personacredito_id=persona.id" title="PAGAR CUOTA">
+                                                <i class="fa fa-dollar"></i>
+                                                </button>
+                                            </template>
+                                            <template v-else>
+                                                <button type="button" disabled class="btn btn-outline-primary btn-sm"  title="PAGAR CUOTA">
+                                                <i class="fa fa-dollar"></i>
+                                                </button>
+                                            </template>
                                         </template>
                                         <template v-else>
-                                            <button type="button" disabled class="btn btn-outline-primary btn-sm"  title="PAGAR CUOTA">
-                                               <i class="fa fa-dollar"></i>
+                                            <button type="button" @click="abrirModal('persona','actualizar',persona)" class="btn btn-warning btn-sm" title="EDITAR CLIENTE">
+                                            <i class="fa fa-pencil"></i>
+                                            </button>&nbsp;
+                                        
+                                            <button type="button" class="btn btn-danger btn-sm" @click="desactivarCliente(persona.id,persona.estadocredito)" title="ELIMINAR CLIENTE">
+                                                <i class="fa fa-trash-o"></i>
                                             </button>
+                                        
+
+                                            <template v-if="persona.estadocredito==1">
+                                                <button type="button" class="btn btn-primary btn-sm" @click="showpagocuota=true;personacredito_id=persona.id" title="PAGAR CUOTA">
+                                                <i class="fa fa-dollar"></i>
+                                                </button>
+                                            </template>
+                                            <template v-else>
+                                                <button type="button" disabled class="btn btn-outline-primary btn-sm"  title="PAGAR CUOTA">
+                                                <i class="fa fa-dollar"></i>
+                                                </button>
+                                            </template>
                                         </template>
+                                      
                                        
                             </td>
                                  <td v-text="persona.dni"></td>
@@ -228,7 +243,7 @@
 
 <script>
     export default {
-         props : ['ruta'],
+         props : ['ruta','rol'],
         data (){
             return {
                 //datos de la persona
@@ -331,7 +346,7 @@
             //CARGAR LA TABLA DE CLIENTES
             listarPersona (page,buscar,criterio){
                 let me=this;
-                var url= this.ruta+'/cliente?page=' + page + '&buscar='+ buscar + '&criterio='+ criterio;
+                var url= '/cliente?page=' + page + '&buscar='+ buscar + '&criterio='+ criterio;
                 axios.get(url).then(function (response) {
                     var respuesta= response.data;
                     me.arrayPersona = respuesta.personas.data;
@@ -359,12 +374,12 @@
                 
                 let me = this;
 
-                axios.post(this.ruta+'/cliente/registrar',{
+                axios.post('/cliente/registrar',{
                     'dni': this.dni,
                     'nombre': this.nombre,
                     'apellidopaterno': this.apellidopaterno,
                     'apellidomaterno' : this.apellidomaterno,
-                    //'fechanacimiento' : this.fechanacimiento,
+                    'fechanacimiento' : this.fechanacimiento,
                     'telefono': this.telefono,
                     'direccion' : this.direccion,
                     'email' : this.email,
@@ -377,7 +392,7 @@
                     me.listarPersona(1,'','nombre');
                 }).catch(function (error) {
                     console.log(error);
-                    console.log(this.dni);
+                   
                 });
             },
             
@@ -389,7 +404,7 @@
                 
                 let me = this;
 
-                 axios.put(this.ruta+'/cliente/actualizar',{
+                 axios.put('/cliente/actualizar',{
                     'dni': this.dni,
                     'nombre': this.nombre,
                    'apellidopaterno': this.apellidopaterno,
@@ -445,7 +460,7 @@
                         if (result.value) {
                             //usamos axios para desactivar
                               let me=this;
-                                 axios.put(this.ruta+'/cliente/desactivar',{ //hacemos referencia a la ruta que creamos
+                                 axios.put('/cliente/desactivar',{ //hacemos referencia a la ruta que creamos
                                     'id':id
                                 }).then(function(response){ //de una ves que se ejecuto mostramos le mensaje de desactivado
                                     me.listarPersona(1,'','nombre');

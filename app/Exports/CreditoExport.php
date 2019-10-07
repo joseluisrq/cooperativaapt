@@ -35,48 +35,37 @@ class CreditoExport implements FromView
    
         return view('excel.creditoexcel',[
             'cuotas'=>Cuota::join('creditos','cuotas.idcredito','=','creditos.id')
-             ->where ('cuotas.estado', '=', '1')  
-        
+             ->where ('cuotas.estado', '=', '1')     
+             ->where ('creditos.estado', '<>', '0')       
             ->select(
                 'cuotas.monto',
-                'cuotas.id',
                 'cuotas.idcredito',
              )
             
              ->get() ,
 
              'porciones'=>Porcion::join('cuotas','porciones.id','=','cuotas.id')
-             ->join('creditos','cuotas.idcredito','=','creditos.id')
-             ->where ('porciones.estado', '=', '1')  
-                     
-               ->select(
-                   
+              ->where ('porciones.estado', '=', '1')                      
+               ->select(                   
                 'porciones.monto',
-                'porciones.id as idcuota',
-                'creditos.id as idcredito'
+                'cuotas.idcredito'
                 )
                
                 ->get() ,
-             'creditos'=>Credito::  
-              where ('creditos.estado', '=', '1')       
-             ->select(
-                'creditos.montodesembolsado',
-                'creditos.id',
-                'creditos.numeroprestamo'
- 
-             )
-            
-             ->get(),
 
-             'creditosmes'=>Cuota::join('creditos','cuotas.idcredito','=','creditos.id')
+             'creditosmes'=>Cuota::
+             join('creditos','cuotas.idcredito','=','creditos.id')
+             ->select(DB::raw('count(*) as count, cuotas.idcredito'))
              ->whereMonth('cuotas.fechapago', $dateMes)
              ->whereYear('cuotas.fechapago', $dateAno)
-        
-            ->select(
-                'creditos.id'
-             )
-            
-             ->get() 
+             ->orWhere('creditos.mora', 1)
+             ->groupBy('cuotas.idcredito')               
+             ->get() ,
+
+             'creditos'=>Credito::
+             select('creditos.numeroprestamo','creditos.id','creditos.montodesembolsado')
+             ->where ('creditos.estado', '<>', '0')     
+             ->get()
 
 
         ]);

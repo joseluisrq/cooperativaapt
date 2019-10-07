@@ -69,7 +69,7 @@
                                         </template>
                                         <template v-else>
                                             <button type="button" class="btn btn-info btn-sm" @click="activarUsuario(persona.id)">
-                                                <i class="icon-check"></i>
+                                               <i class="menu-icon fa fa-bolt"></i>
                                             </button>
                                         </template>
                             </td>
@@ -278,7 +278,7 @@
             //SON LOS MISMOS METODOS DE CLEINTES PERO EN USUARIOS :v
             listarPersona (page,buscar,criterio){
                 let me=this;
-                var url= this.ruta+'/user?page=' + page + '&buscar='+ buscar + '&criterio='+ criterio;
+                var url= '/user?page=' + page + '&buscar='+ buscar + '&criterio='+ criterio;
                 axios.get(url).then(function (response) {
                     var respuesta= response.data;
                     me.arrayPersona = respuesta.personas.data;
@@ -290,7 +290,7 @@
             },
             selectRol(){
                 let me=this;
-                var url= this.ruta+'/rol/selectRol';
+                var url= '/rol/selectRol';
                 axios.get(url).then(function (response) {
                     var respuesta= response.data;
                     me.arrayRol = respuesta.roles;
@@ -313,7 +313,7 @@
                 
                 let me = this;
 
-                axios.post(this.ruta+'/user/registrar',{
+                axios.post('/user/registrar',{
                     'dni': this.dni,
                     'nombre': this.nombre,
                     'apellidopaterno': this.apellidopaterno,
@@ -347,7 +347,7 @@
                 
                 let me = this;
 
-                 axios.put(this.ruta+'/user/actualizar',{
+                 axios.put('/user/actualizar',{
                     'dni': this.dni,
                     'nombre': this.nombre,
                     'apellidopaterno': this.apellidopaterno,
@@ -466,12 +466,12 @@
                         if (result.value) {
                             //usamos axios para desactivar
                               let me=this;
-                                 axios.put(this.ruta+'/user/desactivar',{ //hacemos referencia a la ruta que creamos
+                                 axios.put('/user/desactivar',{ //hacemos referencia a la ruta que creamos
                                     'id':id
                                 }).then(function(response){ //de una ves que se ejecuto mostramos le mensaje de desactivado
                                     me.listarPersona(1,'','nombre');
                                       swalWithBootstrapButtons.fire(
-                                    'Activado!',
+                                    'Desactivado!',
                                     'El registro ha sido desactivado con éxito',
                                     'success'
                                     )
@@ -516,7 +516,7 @@
                         if (result.value) {
                             //usamos axios para desactivar
                               let me=this;
-                                 axios.put(this.ruta+'/user/activar',{ //hacemos referencia a la ruta que creamos
+                                 axios.put('/user/activar',{ //hacemos referencia a la ruta que creamos
                                     'id':id
                                 }).then(function(response){ //de una ves que se ejecuto mostramos le mensaje de desactivado
                                     me.listarPersona(1,'','nombre');

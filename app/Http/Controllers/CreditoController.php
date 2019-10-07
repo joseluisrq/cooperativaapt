@@ -53,7 +53,7 @@ class CreditoController extends Controller
             ->orderBy('creditos.id', 'desc')->paginate(10);
         }
         else{
-            if($criterio=='dni'){
+            if($criterio=='dni' || $criterio=='nombre'  || $criterio=='apellidopaterno' || $criterio=='apellidomaterno'){
                 $creditos = Credito::join('clientes','creditos.idcliente','=','clientes.id')
                 ->join('personas','clientes.id','=','personas.id')
                 ->join('users','creditos.idusuario','=','users.id')
@@ -707,5 +707,46 @@ class CreditoController extends Controller
  
            
          
+     }
+
+     public function creditoMoras(Request $request)
+     {
+        // if (!$request->ajax()) return redirect('/');
+          
+        $creditos = Cuota::join('creditos','cuotas.idcredito','=','creditos.id')
+        ->select(DB::raw('count(*) as count, cuotas.idcredito'))
+        ->where('cuotas.estado','=',0)
+        ->where('cuotas.fechapago','<',date('Y-m-d'))
+        ->groupBy('cuotas.idcredito')        
+        ->get();    
+    
+
+        return
+        [
+            "creditos"=>$creditos
+        ];
+     }
+
+     public function porMorosos(Request $request)
+     {
+       
+         $cuotas = $request->data;
+         foreach($cuotas as $ep=>$cuot)
+         {  
+            try{
+                DB::beginTransaction();              
+                $credi = Credito::findOrFail($cuot['idcredito']);
+                $credi->mora = '1'; //con mora
+                $credi->save();                          
+                
+     
+                DB::commit();
+     
+            } catch (Exception $e){
+                DB::rollBack();
+            }
+            
+          
+         }   
      }
 }

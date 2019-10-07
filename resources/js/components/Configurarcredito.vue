@@ -171,7 +171,7 @@
                                                 <label class="badge badge-warning">En proceso</label>
                                             </td>
                                             <td v-if="credito.estado==0" >
-                                                <label class="badge badge-danger">Desactivador</label>
+                                                <label class="badge badge-danger">Desactivado</label>
                                             </td>
                                             <td v-if="credito.estado==2" >
                                                 <label class="badge badge-success">Completado</label>
@@ -390,7 +390,7 @@ import vSelect from 'vue-select'
                 this.listado=3;
                 this.arrayBitacoraCredito.length=0;
                 let me=this;
-                var url= this.ruta+'/bitacoracredito/cambiosRegistrados?id='+id;
+                var url= '/bitacoracredito/cambiosRegistrados?id='+id;
                  axios.get(url).then(function (response) {
                     var respuesta= response.data;
                     me.arrayBitacoraCredito = respuesta.creditosbit;
@@ -403,7 +403,7 @@ import vSelect from 'vue-select'
             },
 
             cargarPdf(){
-                window.open(this.ruta+'/credito/listarpdf','_blank');
+                window.open('/credito/listarpdf','_blank');
             },
             cambiarPagina(page,buscar,criterio)
             {
@@ -416,7 +416,7 @@ import vSelect from 'vue-select'
             {
                 let me=this;
                 me.listado=2;
-                var url= this.ruta+'/credito?page=' + page + '&buscar='+ buscar + '&criterio='+ criterio;
+                var url= '/credito?page=' + page + '&buscar='+ buscar + '&criterio='+ criterio;
                 axios.get(url).then(function (response) {
                     var respuesta= response.data;
                     me.arrayCredito = respuesta.creditos.data;
@@ -435,7 +435,7 @@ import vSelect from 'vue-select'
                 this.arrayCredito.length=0
                  let me=this;
                   
-                var url= this.ruta+'/credito/creditosClienteEdit?id='+credito+'';
+                var url= '/credito/creditosClienteEdit?id='+credito+'';
                 axios.get(url).then(function (response) {
                      var respuesta= response.data;
                      
@@ -485,7 +485,7 @@ import vSelect from 'vue-select'
                         if (result.value) {
                             //usamos axios para desactivar
                               let me=this;
-                                 axios.put(this.ruta+'/credito/desactivar',{ //hacemos referencia a la ruta que creamos
+                                 axios.put('/credito/desactivar',{ //hacemos referencia a la ruta que creamos
                                     'id':id,
                                     'idpersona':idpersona
                                 }).then(function(response){ //de una ves que se ejecuto mostramos le mensaje de desactivado
@@ -515,7 +515,7 @@ import vSelect from 'vue-select'
             selectCliente(search, loading){
                  let me=this;
                  loading(true)
-                var url= this.ruta+'/cliente/selectCliente?filtro='+search;
+                var url= '/cliente/selectCliente?filtro='+search;
                 axios.get(url).then(function (response) {
                     let respuesta= response.data;
                     q:search;
@@ -544,7 +544,7 @@ import vSelect from 'vue-select'
                 
                 let me = this;
 
-                axios.put(this.ruta+'/credito/actualizar',{
+                axios.put('/credito/actualizar',{
 
                     'numeroprestamo': this.numeroprestamo,
                     'idkiva': this.idkiva,

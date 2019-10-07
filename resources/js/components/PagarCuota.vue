@@ -234,7 +234,7 @@ export default {
             obtenerCuotaDeCliente(){
                 let me=this;
                 
-                axios.get(this.ruta+'/cuota/detallepagar?id='+this.idcliente)
+                axios.get('/cuota/detallepagar?id='+this.idcliente)
                     .then(res => {
                     this.dataC = res.data.cuotas;
                     me.interes=me.dataC[0].monto*(me.dataC[0].tasa/100);
@@ -248,7 +248,7 @@ export default {
 
             //pagar cuota
             pagarCuota: function(idcuota,otroscostoscuota,idpersona){
-                axios.put(this.ruta+'/cuota/pagar',{
+                axios.put('/cuota/pagar',{
                     'id': idcuota,
                     'descripcion': this.descpagocuota,
                     'otrospagos': otroscostoscuota,
@@ -306,7 +306,7 @@ export default {
                  let pagoCuotaProcion=montopagardolares-pagoInteresPorcion;
                
                
-                axios.post(this.ruta+'/cuota/porcion',{
+                axios.post('/cuota/porcion',{
                     'id':idcuota,
                     'monto': pagoCuotaProcion,
                     'otroscostos': this.otroscostosporcion,

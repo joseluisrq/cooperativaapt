@@ -53,7 +53,7 @@ const app = new Vue({
     data: {
         menu: 1,
         notificacion: [],
-        ruta: 'http://127.0.0.1:8000'
+        ruta: 'http://www.creditos.cooperativaaptdelnorte.com'
     },
     created() {
         /*    let me = this;

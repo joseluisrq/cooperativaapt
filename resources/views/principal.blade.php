@@ -64,9 +64,7 @@
                 </div>
               </a>
           
-              <a class="dropdown-item">
-                Cambiar Contraseña
-              </a>
+             
               <a class="dropdown-item" href="{{ route('cerrarsesion') }}"
               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                Cerrar Sesion

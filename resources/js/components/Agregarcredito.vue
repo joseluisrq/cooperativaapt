@@ -388,7 +388,7 @@ import vSelect from 'vue-select'
                 
                 let me=this;
                  me.arrayCuota=[];
-                var url= this.ruta+'/credito/creditosCliente?idkiva='+me.idkiva;
+                var url= '/credito/creditosCliente?idkiva='+me.idkiva;
                 axios.get(url).then(function (response) {
                     var respuesta= response.data;
                     me.arrayCredito = respuesta.creditos;
@@ -404,7 +404,7 @@ import vSelect from 'vue-select'
 
             //GENERAR PDF DE CREDITO CREADO
              pdfDetallecuota(idcredito){
-                 window.open(this.ruta+'/credito/detallecreditopdf/'+idcredito,'_blank');
+                 window.open('/credito/detallecreditopdf/'+idcredito,'_blank');
             },
          
             //LIMPIAR LOS CAMPOS PARA UN NUEVO CREDITO
@@ -433,7 +433,7 @@ import vSelect from 'vue-select'
             selectCliente(search, loading){
                  let me=this;
                  loading(true)
-                var url= this.ruta+'/cliente/selectCliente?filtro='+search;
+                var url= '/cliente/selectCliente?filtro='+search;
                 axios.get(url).then(function (response) {
                     let respuesta= response.data;
                     q:search;
@@ -567,7 +567,7 @@ import vSelect from 'vue-select'
                     confirmButtonText: 'Si'
                     }).then((result) => {
                     if (result.value) {
-                       axios.post(this.ruta+'/credito/registrar',{
+                       axios.post('/credito/registrar',{
 
                                 'numeroprestamo': this.numeroprestamo,
                                 'idkiva': this.idkiva,
