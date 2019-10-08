@@ -53,7 +53,7 @@ const app = new Vue({
     data: {
         menu: 1,
         notificacion: [],
-        ruta: 'http://www.credi.cooperativaaptdelnorte.com/'
+        ruta: 'https://aptsanmarcos.cersa.org.pe'
     },
     created() {
         /*    let me = this;
