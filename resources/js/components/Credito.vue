@@ -2,6 +2,8 @@
  <main class="">
 
 
+<template  v-if="verpago==false">
+   
 
     <!--detalle de crtedito-->
     <template v-if="listado==0">
@@ -123,10 +125,23 @@
              <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h6 class="font-weight-bold">Cuotas</h6>
+                        <div class="row">
+                            <div class="col-md-8">
+                                  <h6 class="font-weight-bold">Cuotas 
+                           </h6> 
+                            </div>
+                            <div class="col-md-4" >
+                                <template v-if="estadodelcredito==1">
+                                    <button class="btn btn-warning" @click="verpago=true">
+                                    Pagar cuota pendiente
+                                    </button>
+                                </template>
+                            </div>
+                        </div>
+                      
 
                     <!--TABLA DE LA LISTA DE CREDITOS-->
-                    <div class="table-responsive">
+                    <div class="table-responsive mt-4">
                         <table class="table  table-bordered ">
                             <thead class="table-bordered ">
                                 <tr class="font-weight-bold">
@@ -234,10 +249,20 @@
                                                  </td>
                                                 
                                                 <td class="text-primary">{{porcion.fechacancelacion}}</td>
-                                                <td v-text="'$ '+porcion.monto"></td>
-                                                <td >
-                                                      <span class="badge badge-outline-primary" style="font-size:12px;"> S/ {{ parseFloat(porcion.monto * tipocambio).toFixed(2)}}</span>
+                                                <td >$ {{
+                                                    porcion.monto}}    <span class="badge badge-outline-primary" style="font-size:12px;"> S/ {{ parseFloat(porcion.monto * tipocambio).toFixed(2)}}</span></td>
+                                               
+                                                <td class="text-primary">
+                                                 S/ {{((porcion.monto*arrayCredito[0].tasa)/(100-arrayCredito[0].tasa)*tipocambio).toFixed(2)}}  
                                                 </td>
+                                                 <td class="text-primary">S/  {{
+                                                     
+                                                     
+                                                      (parseFloat(porcion.monto*tipocambio)+((porcion.monto*arrayCredito[0].tasa)/(100-arrayCredito[0].tasa)*tipocambio)).toFixed(1)
+                                                      
+                                                      }}
+                                                    
+                                                 </td>
                                                 <td></td>
                                                  <td> <label class="badge badge-success">Pagada</label></td>
                                                 <td v-text="porcion.nombre+' '+porcion.apellidopaterno"></td>
@@ -321,7 +346,7 @@
                                 <tbody>
                                     <tr v-for="credito in arrayCredito" :key="credito.id">
                                     <td class="py-1">
-                                                <button type="button" @click="listarCredito(credito.idkiva)" class="btn btn-success btn-sm">
+                                                <button type="button" @click="listarCredito(credito.id)" class="btn btn-success btn-sm">
                                                 <i class="fa fa-eye"></i>
                                                 </button>&nbsp;
                                                
@@ -496,6 +521,11 @@
                 </div>
         </div>
 <!-- fin de detalle de cuota-->
+</template>
+<template v-if="verpago==true">
+    <button type="button" @click="verpago=false;listarCredito(idcreditoaxiliar)" class="btn btn-primary">Regresar</button>
+    <pagarcuota :idcliente="enviaridcliente" ></pagarcuota>
+</template>
 
    </main>
 </template>
@@ -545,6 +575,10 @@ import vSelect from 'vue-select'
                 buscar : '',
                 hoy:'',
                 interesxCuota:0,
+                enviaridcliente:0,
+                verpago:false,
+                estadodelcredito:0,
+                idcreditoaxiliar:0
             }
         },
         components:{
@@ -634,16 +668,20 @@ import vSelect from 'vue-select'
                 });
             },
             //cetalle de credito
-            listarCredito (idkiva){
+            listarCredito (id){
                  
                 let me=this;
-                var url= '/credito/creditosCliente?idkiva='+idkiva;
+                var url= '/credito/creditosClienteid?id='+id;
                 axios.get(url).then(function (response) {
                     var respuesta= response.data;
                     me.arrayCredito = respuesta.creditos;
                      me.arrayCuotasnuevo = respuesta.cuotas;
                     me.interesxCuota=(me.arrayCredito[0].montodesembolsado*(me.arrayCredito[0].tasa/100))/me.arrayCredito[0].numerocuotas;
                     me.tipocambio=me.arrayCredito[0].tipocambio;
+                    me.enviaridcliente=me.arrayCredito[0].idcliente;
+                    me.estadodelcredito=me.arrayCredito[0].estado;
+                     me.idcreditoaxiliar=me.arrayCredito[0].id;
+                    
 
                     me.montofijo=(me.arrayCredito[0].montodesembolsado/me.arrayCredito[0].numerocuotas).toFixed(2);
                      me.listado=0;

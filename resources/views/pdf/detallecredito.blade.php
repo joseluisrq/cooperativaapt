@@ -101,18 +101,27 @@ td, th {
                 <h4> Contrato de Credito/Pagaré</h4>
             </div>
             <p>
-                ID PRESTAMO :  {{$c->numeroprestamo}}<br><br>
-                ID CLIENTE:  {{$c->dni}}<br><br>
-                ID KIVA:  {{$c->idkiva}}<br><
+                ID PRESTAMO :  {{$c->numeroprestamo}}<br>
+                ID CLIENTE:  {{$c->dni}}<br>
+                ID KIVA:  {{$c->idkiva}}<br>
             </p>
              <p>
                   Yo,  {{$c->nombre}}  {{$c->apellidopaterno}} {{$c->apellidomaterno}} con DNI  N° 
                    {{$c->dni}}; entiendo y estoy de acuerdo realizar los pagos en acuerdo con los
                     términos y condiciones 
             </p>
-            <p> Firma de Acreditado ______________________________  &nbsp;&nbsp;&nbsp; Fecha {{date('d/m/Y')}}</p>
+      
+            <p> Firma de Acreditado ______________________________ <br>
+           
+                 F. Aprobacion : {{$c->fechakiva}}
+                 &nbsp;&nbsp;&nbsp;
+                 F. Desembolso:  {{$c->fechadesembolso}}
+                </p>
             <p> [Representante de APT del Norte] </p>
-            <p>Firma ______________________________  &nbsp;&nbsp;&nbsp; Fecha {{date('d/m/Y')}} </p>
+            <p>Firma ______________________________  <br>
+                    F.Aprobacion : {{$c->fechakiva}}
+                    &nbsp;&nbsp;&nbsp;
+                    F. Desembolso:  {{$c->fechadesembolso}} </p>
             
 
             <h4> I.Términos de Préstamo</h4>
@@ -168,21 +177,15 @@ td, th {
                        <td style="width:17%">Otros Costos</th>
                        <td style="width:15%">Pago total</th>
                     </tr>
-                    <tr>
-                        <td style="width:17%">{{$c->fechadesembolso}}</td>
-                        <td style="width:17%">{{$c->montodesembolsado}}</td>
-                        <td style="width:17%">0.00</td>
-                        <td style="width:17%">0.00</td>
-                        <td style="width:17%">0.00</td>
-                        <td style="width:17%">0.00</td>
-                        
-                    </tr>
+                  
                     <?php $sumaotros=0; ?>
                     @foreach ($cuotas as $cuot)
                    
                     <tr>
                         <td style="width:17%">{{$cuot->fechapago}}</td>
-                        <td style="width:17%">{{round($cuot->saldopendiente,2)}}</td>
+                        <td style="width:17%">{{
+                        $cuot->saldopendiente+$cuot->monto
+                        }}</td>
                         <td style="width:17%">{{
                             round(
                             $cuot->monto
@@ -241,4 +244,120 @@ td, th {
         
     </div>
     @endforeach
+</body>
+
+<body>
+        @foreach ($credito as $c)
+       
+        <div class="book">
+         <div class="page">
+            <div align='center'>
+                <img src="./images/logo.png" width="120px" alt="">
+                <h4> Cronograma de Pagos</h4>
+            </div>
+            <p>
+                ID de Prestamo : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{$c->numeroprestamo}}<br>
+                ID Cliente:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;     {{$c->dni}}<br>
+                Codigo Kiva: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  {{$c->idkiva}}<br>
+                Cliente: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{$c->nombre}}  {{$c->apellidopaterno}} {{$c->apellidomaterno}}<br>
+                Capital en dolares : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{$c->montodesembolsado}} Dolares<br>
+                Tipo en Cambio : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{round($c->tipocambio,2)}}<br>
+                Capital en nuevos soles: {{$c->montodesembolsado*$c->tipocambio}} Nuevos Soles<br>
+                Monto Neto :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{$c->montodesembolsado*$c->tipocambio}} Nuevos Soles<br>
+                N° de Cuotas :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{$c->numerocuotas}}<br>
+                T.E.A :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{$c->tasa}} %
+                &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;  {{
+                     round(
+                            (($c->montodesembolsado*($c->tasa / 100))*$c->tipocambio ) 
+                            ,2)
+
+                }} <br>
+                Frecuencia de Pago:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <?php
+                if($c->periodo==1)echo "Mensual";
+                elseif($c->periodo==2)echo "Bimestral";
+                elseif($c->periodo==3)echo "Trimestral";
+                elseif($c->periodo==6)echo "Semestral";
+                elseif($c->periodo==12)echo "Anual";
+                ?><br>
+                Forma de Pago : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Cuota Fija<br>
+                Fecha Desembolso: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{$c->fechadesembolso}}<br>
+                Fecha Aprobación : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{$c->fechakiva}}<br><br><br>
+            </p>
+            
+            <h4>Cuotas a Pagar</h4>
+                <table style="width:100%">
+                    <tr>
+                        <td style="width:17%">Número</th>
+                       <td style="width:17%">Fecha de Vencimiento</th>
+                       <td style="width:17%">Capital</th>
+                       <td style="width:17%">Interes</th>
+                       <td style="width:17%">Cuota</th>
+                       <td style="width:17%">Total</th>
+                       
+                    </tr>
+                  
+                    <?php $sumaotros=0; ?>
+                    @foreach ($cuotas as $cuot)
+                   
+                    <tr>
+                        <td style="width:10%">{{$cuot->numerocuota}}</td>
+
+                        <td style="width:12%">{{$cuot->fechapago}}</td>
+
+                        <td style="width:12%">{{
+                        round($cuot->monto*$c->tipocambio,2)
+                        }}</td>
+
+                        <td style="width:17%">{{
+                            round(
+                            (($c->montodesembolsado*($c->tasa / 100)) / $c->numerocuotas)*$c->tipocambio
+                            ,2)
+                        
+                        }}</td>
+                        <td style="width:17%">{{
+                            
+                          round(  (($cuot->monto)+(($c->montodesembolsado*($c->tasa / 100)) / $c->numerocuotas))*$c->tipocambio,2)
+                        
+                        }}</td>
+                       <td style="width:17%">{{
+                            
+                            round(  (($cuot->monto)+(($c->montodesembolsado*($c->tasa / 100)) / $c->numerocuotas))*$c->tipocambio,2)
+                          
+                          }}</td>
+                        
+                    </tr>
+                    @endforeach
+                    <tr>
+                        <td></td>
+                        <td style="width:17%"><strong>Totales</strong> </td>
+                        <td style="width:17%"><strong>S/ {{$c->montodesembolsado*$c->tipocambio}}</strong></td>
+                        <td style="width:17%"><strong>S/ {{   round(
+                                (($c->montodesembolsado*($c->tasa / 100))*$c->tipocambio ) 
+                                ,2)}}</strong></td>
+                        <td style="width:17%"><strong>{{
+                          round( ( $c->montodesembolsado+
+                            ($c->montodesembolsado*($c->tasa / 100)))*$c->tipocambio,2)
+
+                        
+                        }}</strong></td>
+                        
+                        <td style="width:15%"><strong>{{
+                            round( ( $c->montodesembolsado+
+                            ($c->montodesembolsado*($c->tasa / 100)))*$c->tipocambio,2)
+                        
+                        }}</strong></td>
+                    </tr>
+
+                </table>
+          <br><br><br><br>
+            <p>
+                ______________________________________________<br>
+                {{$c->nombre}}  {{$c->apellidopaterno}} {{$c->apellidomaterno}}<br>
+                DNI :{{ $c->dni}}
+            </p>
+        </div>
+        
+    </div>
+    @endforeach
+</body>
 </html>

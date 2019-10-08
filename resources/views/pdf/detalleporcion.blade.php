@@ -40,7 +40,8 @@
                    
                    
                     <div class="container" style="background-color:white">
-                            <p>APT SAN MARCOS RUC: 20495964214</p>
+                        <p> APT del Norte &nbsp;&nbsp;  RUC: 20495964214</p>
+                       
                       
                     <p>NRO OPERACIÓN: {{$c->id}} -  {{$c->numerocuota}} -{{$c->idporcion}}
                     <br> {{$c->pfechacancelacion}}
@@ -64,7 +65,7 @@
                     <br>TOTAL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: S/
                     {{round(
                      ($c->pmonto*$c->tipocambio)+($int)+$c->potroscostos
-                      ,2)
+                      ,1)
                     }} 
   
                       </p>
@@ -89,7 +90,8 @@
                    
                    
                    <div class="container" style="background-color:white">
-                           <p>APT SAN MARCOS RUC: 20495964214</p>
+                      <p> APT del Norte &nbsp;&nbsp;  RUC: 20495964214</p>
+                       
                      
                    <p>NRO OPERACIÓN: {{$c->id}} -  {{$c->numerocuota}} -{{$c->idporcion}}
                    <br> {{$c->pfechacancelacion}}
@@ -104,7 +106,7 @@
                    <br>INTERES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: S/
                    <?php
                      $int=round((($c->pmonto*$c->tasa)/(100-$c->tasa)*$c->tipocambio),2);
-                     echo $int
+                           echo $int
                    ?>
                    <br>OTROS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
@@ -113,7 +115,7 @@
                    <br>TOTAL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: S/
                    {{round(
                     ($c->pmonto*$c->tipocambio)+($int)+$c->potroscostos
-                     ,2)
+                     ,1)
                    }} 
  
                      </p>

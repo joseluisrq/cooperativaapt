@@ -178,6 +178,64 @@ class CreditoController extends Controller
 
     }
 
+    public function creditosClienteid(Request $request)
+    {
+     
+        if (!$request->ajax()) return redirect('/');
+ 
+        $id = $request->id;
+         $creditos = Credito::join('clientes','creditos.idcliente','=','clientes.id')
+        ->join('personas','clientes.id','=','personas.id')
+        ->select(
+            'creditos.id', 
+            'creditos.numeroprestamo',
+            'creditos.idkiva',
+            'creditos.montodesembolsado',
+            'creditos.fechadesembolso',
+            'creditos.numerocuotas',
+            'creditos.tipocambio',
+            'creditos.FECHAKIVA',
+            'creditos.tasa',
+            'creditos.estado',
+            'creditos.periodo',
+            'personas.id as idcliente',
+            'personas.nombre',
+            'personas.apellidopaterno',
+            'personas.apellidomaterno')
+        ->where('creditos.id','=',$id)
+        ->orderBy('creditos.id', 'desc')->get();
+
+
+        $cuotas = Cuota::join('creditos','cuotas.idcredito','=','creditos.id')
+        ->join('users','cuotas.idusuario','=','users.id')
+        ->join('personas','users.id','=','personas.id')
+       ->select(
+           'cuotas.id', 
+           'cuotas.monto',
+           'cuotas.fechapago',
+           'cuotas.fechacancelacion',
+           'cuotas.saldopendiente',
+           'cuotas.otroscostos',
+           'cuotas.descripcion',
+           'cuotas.estado',
+           'cuotas.numerocuota',
+
+           'personas.nombre',
+           'personas.apellidopaterno'
+           )
+         ->where('creditos.id','=',$id)
+        ->orderBy('cuotas.id', 'asc')->get();
+
+
+         
+        return [
+            'creditos' => $creditos,
+            'cuotas' => $cuotas
+        ];
+
+    }
+
+
      //Detalle de porcion de cuota en historial de creditos
      public function listarPorcion(Request $request)
      {
@@ -408,8 +466,14 @@ class CreditoController extends Controller
     public function desactivar(Request $request)
     {
         if (!$request->ajax()) return redirect('/');
+       
+        $des=$request->m.'-Des-'.$request->id;
+        $desk=$request->k.'-Des-'.$request->id;;
+
         $cuota = Credito::findOrFail($request->id);
-        $cuota->estado = '0'; //anulado
+        $cuota->estado = '0'; 
+        $cuota->numeroprestamo =$des;
+        $cuota->idkiva =$desk;
         $cuota->save();
 
         $persona = Cliente::findOrFail($request->idpersona);
@@ -477,6 +541,7 @@ class CreditoController extends Controller
             'creditos.idkiva',
              'creditos.montodesembolsado',
             'creditos.fechadesembolso',
+            'creditos.fechakiva',
             'creditos.numerocuotas',
             'creditos.tipocambio',
             'creditos.tasa',
@@ -526,6 +591,7 @@ class CreditoController extends Controller
             'creditos.idkiva',
             'creditos.montodesembolsado',
             'creditos.fechadesembolso',
+            'creditos.fechakiva',
             'creditos.numerocuotas',
             'creditos.tipocambio',
             'creditos.tasa',

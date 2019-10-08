@@ -397,7 +397,7 @@ export default {
 
             this.calendarEvents.push({
               id: cuotas[i].id,
-              title: 'KIVA: '+cuotas[i].idkiva,
+              title: cuotas[i].numeroprestamo,
               start: cuotas[i].fechapago,
               backgroundColor: backColor,
               textColor: '#FFFFFF',

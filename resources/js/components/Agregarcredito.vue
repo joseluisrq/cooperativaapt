@@ -99,21 +99,40 @@
                                     <thead>
                                         <tr>
                                             <th>N°</th>
-                                            <th>Monto de Cuota ($)</th>
-                                            <th>Saldo Pendiente Neto($)</th>
                                             <th>Fecha de Pago</th>
+                                            <th>Cuota Neta ($)</th>
+                                            <th>Interes($)<span class="text-primary"> S/</span> </th>
+                                            <th>Monto a pagar<span class="text-primary"> S/</span> </th>
+                                            <th>Saldo Pendiente Neto($)</th>
+                                            
                                             <th>Otros Pagos</th>
                                             <th>Descripcion</th>
                                         </tr>
                                     </thead>
                                     <tbody v-if="arrayCuota.length">
                                         <tr v-for="cuota in arrayCuota" :key="cuota.id">
-                                            <td v-text="cuota.contador"></td>
-                                            <td v-text="cuota.monto"></td>
-                                            <td v-text="cuota.saldopendiente"></td>
+                                             <td v-text="cuota.contador"></td>
                                             <td> 
                                                 <input type="date" class="form-control"  v-model="cuota.fechapago"   placeholder="Fecha de Pago">
                                             </td>
+                                            <td v-text="'$ '+cuota.monto"></td>
+
+                                             <td >
+                                                 $ {{interesporcuota}} 
+                                                 <span class="badge badge-primary" style="font-size: 12px;"> 
+                                                S/. {{interesporcuotasoles}}</span>
+                                             </td>
+
+                                               <td >
+                                                 $ {{ (parseFloat(cuota.monto)+parseFloat(interesporcuota)).toFixed(2)}} 
+                                                 <span class="badge badge-primary" style="font-size: 12px;"> 
+                                                S/. {{ ((parseFloat(cuota.monto)+parseFloat(interesporcuota))*tipocambio).toFixed(2)}}</span>
+                                             </td>
+                                           
+                                           
+                                          
+                                            <td v-text="'$ '+cuota.saldopendiente"></td>
+                                            
                                             <td> 
                                                 <input type="number" class="form-control"  v-model="cuota.otroscostos"   placeholder="Otros Costos">
                                             </td>
@@ -165,16 +184,18 @@
                 
 
                   <div class="row" v-for="credito in arrayCredito" :key="credito.id">
-                      <div class="col-md-9">
+                      <div class="col-md-7">
                             <h4 class="text-primary mb-5">Detalle de Credito Creado</h4>
                       </div>
                     
-                     <div class="col-md-2">
+                     <div class="col-md-4">
                         
                            
-                             <button type="button" class="btn btn-info btn-sm"  @click="pdfDetallecuota(credito.id)"><i class="fa fa-file-pdf-o"></i></button>
-                              <button type="button" class="btn btn-success btn-sm"  @click="listado=1;"><i class="fa fa-plus-circle">Nuevo Credito</i></button>
-              
+                             <button type="button" class="btn btn-info btn-sm"  @click="pdfDetallecuota(credito.id)"><i class="fa fa-file-pdf-o"></i>Cronograma</button>                          
+                             <button type="button" class="btn btn-primary btn-sm"  @click="pdfDetallecuotaBoleta(credito.id)"><i class="fa fa-file-pdf-o"></i>Boleta</button>
+                             <button type="button" class="btn btn-success btn-sm"  @click="listado=1;"><i class="fa fa-plus-circle">Nuevo Credito</i></button>
+          
+                             
                      </div>
                     
                      <div class="col-md-1">
@@ -218,6 +239,14 @@
                             <div class="side-left">
                                 <p class="mb-2 font-weight-bold">Fecha de Desembolso</p>
                                 <h6 class="mb-4 font-weight-light" v-text="credito.fechadesembolso"></h6>
+                            </div>
+                        </div>
+                    </div>
+                       <div class="col-md-3">
+                        <div class="wrapper d-flex justify-content-between">
+                            <div class="side-left">
+                                <p class="mb-2 font-weight-bold">Fecha de Aprobacion</p>
+                                <h6 class="mb-4 font-weight-light" v-text="credito.FECHAKIVA"></h6>
                             </div>
                         </div>
                     </div>
@@ -279,7 +308,10 @@
                                      <th class="font-weight-bold">N°</th>
                                       <th class="font-weight-bold">Fecha de Pago</th>
                                   
-                                    <th class="font-weight-bold">Monto Cuota($)</th>
+                                    <th>Cuota Neta ($)</th>
+                                    <th>Interes($)<span class="text-primary"> S/</span> </th>
+                                    <th>Monto a pagar<span class="text-primary"> S/</span> </th>
+
                                     <th class="font-weight-bold">Saldo Pendiente Neto($)</th>
                                     <th class="font-weight-bold">Otros Costos</th>
                                     <th class="font-weight-bold">Descripcion</th>
@@ -292,8 +324,21 @@
                                 <tr v-for="cuotanuevo in arrayCuotasnuevo" :key="cuotanuevo.id">
                                       <td v-text="cuotanuevo.numerocuota"></td>
                                       <td v-text="cuotanuevo.fechapago"></td>
+
+                                     <td v-text="'$ '+cuotanuevo.monto"></td>
+                                    <td >
+                                        $ {{interesporcuota}} 
+                                        <span class="badge badge-primary" style="font-size: 12px;"> 
+                                    S/. {{interesporcuotasoles}}</span>
+                                    </td>
+
+                                    <td >
+                                        $ {{ (parseFloat(cuotanuevo.monto)+parseFloat(interesporcuota)).toFixed(2)}} 
+                                        <span class="badge badge-primary" style="font-size: 12px;"> 
+                                    S/. {{ ((parseFloat(cuotanuevo.monto)+parseFloat(interesporcuota))*tipocambio).toFixed(2)}}</span>
+                                    </td>
                                     
-                                     <td v-text="cuotanuevo.monto"></td>
+                               
                                     <td v-text="cuotanuevo.saldopendiente"></td>
                                     <td v-text="cuotanuevo.otroscostos"></td>
                                     <td v-text="cuotanuevo.descripcion"></td>
@@ -374,6 +419,9 @@ import vSelect from 'vue-select'
              
                 errorCredito : 0,
                 errorMostrarMsjCredito : [],
+
+                interesporcuota:0,
+                interesporcuotasoles:0,
             
             }
         },
@@ -406,6 +454,9 @@ import vSelect from 'vue-select'
              pdfDetallecuota(idcredito){
                  window.open('/credito/detallecreditopdf/'+idcredito,'_blank');
             },
+            pdfDetallecuotaBoleta(idcredito){
+                 window.open('/credito/boletacreditopdf/'+idcredito,'_blank');
+            },
          
             //LIMPIAR LOS CAMPOS PARA UN NUEVO CREDITO
             nuevoCredito(){
@@ -425,6 +476,8 @@ import vSelect from 'vue-select'
 
                     me.arrayCuota=[];
                     me.arrayCliente=[];
+
+                    
 
                    
             },
@@ -511,11 +564,11 @@ import vSelect from 'vue-select'
                     var saldop=(parseFloat(this.montodesembolsado)-parseFloat(cuotaneta)).toFixed(2);
                 
                      //FECHA
-                    var e = new Date(me.fechadesembolso);
+                    var e = new Date(me.fechakiva);
                     var pe=me.periodo
                    // var dia=e.getDate();//
-                    var dia=me.fechadesembolso.substr(-2)
-                    var unmesmas = this.editar_fecha(me.fechadesembolso, me.periodo, "m");
+                    var dia=me.fechakiva.substr(-2)
+                    var unmesmas = this.editar_fecha(me.fechakiva, me.periodo, "m");
 
                     for (let i = 0; i < me.numerocuotas; i++) { 
                     
@@ -539,10 +592,13 @@ import vSelect from 'vue-select'
                     contadoraux++;
                     pe= parseInt(pe)+parseInt(me.periodo);
 
-                    unmesmas = this.editar_fecha(me.fechadesembolso, pe, "m");
+                    unmesmas = this.editar_fecha(me.fechakiva, pe, "m");
                     }
     
                     this.listacuotas=1;
+                    this.interesporcuota=((this.montodesembolsado*(this.tasa/100))/this.numerocuotas).toFixed(2);
+                    this.interesporcuotasoles=(((this.montodesembolsado*(this.tasa/100))/this.numerocuotas)*this.tipocambio).toFixed(2);
+                    
 
                  }//fin del else
                

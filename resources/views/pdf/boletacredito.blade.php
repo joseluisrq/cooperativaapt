@@ -29,7 +29,7 @@
             [ ] Adeltanto de Compra de tara <br>
             [ ] Pago por Compra <br>
             [ ] Pago de Saldo <br>
-            [X] otros : Prestamo Kiva {{$c->idkiva}} al {{$c->nombre}} {{$c->apellidopaterno}} {{$c->apellidomaterno}} <br>
+            [X] otros : Prestamo Kiva {{$c->idkiva}} a {{$c->nombre}} {{$c->apellidopaterno}} {{$c->apellidomaterno}} <br>
             </font>
         </p>
         <hr>

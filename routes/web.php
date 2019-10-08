@@ -52,6 +52,9 @@ Route::group(['middleware'=>['auth']],function(){
              Route::put('/credito/actualizar', 'CreditoController@actualizar');
              Route::post('/credito/registrar', 'CreditoController@store');
              Route::get('/credito/creditosCliente', 'CreditoController@creditosCliente');
+            
+             Route::get('/credito/creditosClienteid', 'CreditoController@creditosClienteid');
+   
              Route::get('/credito/listarPorcion', 'CreditoController@listarPorcion');
              Route::get('/credito/creditosClienteEdit', 'CreditoController@creditosClienteEdit');
              Route::get('/credito/cuotasClientEdit', 'CreditoController@cuotasClientEdit');
@@ -97,7 +100,8 @@ Route::group(['middleware'=>['auth']],function(){
               Route::get('/credito/obtenerCuotas', 'CreditoController@obtenerCuotas');
               Route::post('/credito/registrar', 'CreditoController@store');
               Route::put('/credito/desactivar', 'CreditoController@desactivar');
-
+              Route::get('/credito/creditosClienteid', 'CreditoController@creditosClienteid');
+   
                //Clientes
             Route::get('/cliente', 'ClienteController@index');
             Route::post('/cliente/registrar', 'ClienteController@store');
@@ -180,7 +184,8 @@ Route::group(['middleware'=>['auth']],function(){
             Route::get('/cliente/selectCliente', 'ClienteController@selectCliente');
             Route::get('/cliente/todosselectCliente', 'ClienteController@todosselectCliente');
             Route::put('/cliente/desactivar','ClienteController@desactivar'); 
-
+            Route::get('/credito/creditosClienteid', 'CreditoController@creditosClienteid');
+   
             
             Route::get('/cuota', 'CuotaController@index');
             Route::get('/cuota/detallepagar', 'CuotaController@detalleCuota');

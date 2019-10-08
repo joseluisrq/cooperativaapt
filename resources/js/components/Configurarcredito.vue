@@ -147,7 +147,7 @@
                                                      </button>
                                                 </template>
                                                  <template v-else>
-                                                     <button type="button" title="ELIMINAR CREDITO" @click="eliminarCredito(credito.id,credito.idpersona)" class="btn btn-danger btn-sm">
+                                                     <button type="button" title="ELIMINAR CREDITO" @click="eliminarCredito(credito.id,credito.idpersona,credito.numeroprestamo,credito.idkiva)" class="btn btn-danger btn-sm">
                                                         <i class="fa fa-trash-o"></i>
                                                     </button>
                                                     <button type="button" title="EDITAR CREDITO" @click="editarCredito(credito.id)" class="btn btn-warning btn-sm">
@@ -462,7 +462,7 @@ import vSelect from 'vue-select'
               
             },
              //ELIMNAR credito
-            eliminarCredito(id,idpersona){
+            eliminarCredito(id,idpersona,m,k){
                // let me=this;
               
                  const swalWithBootstrapButtons = Swal.mixin({
@@ -487,6 +487,9 @@ import vSelect from 'vue-select'
                               let me=this;
                                  axios.put('/credito/desactivar',{ //hacemos referencia a la ruta que creamos
                                     'id':id,
+                                    'm':m,
+                                    'k':k,
+                                   
                                     'idpersona':idpersona
                                 }).then(function(response){ //de una ves que se ejecuto mostramos le mensaje de desactivado
                                       me.historialcredito(1,me.buscar,me.criterio);
