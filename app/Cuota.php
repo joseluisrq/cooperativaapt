@@ -15,6 +15,7 @@ class Cuota extends Model
         'fechacancelacion',
         'saldopendiente',
         'monto',
+        'montot',
         'otroscostos',
         'descripcion',
          'estado',

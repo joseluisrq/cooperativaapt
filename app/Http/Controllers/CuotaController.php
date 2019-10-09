@@ -259,6 +259,7 @@ class CuotaController extends Controller
             $porcion->fechapago = $mytime;
             $porcion->fechacancelacion = $mytime;
             $porcion->monto = $request->monto;
+            $porcion->montot = $request->montot;
             $porcion->otroscostos = $request->otroscostos;
             $porcion->descripcion = $request->descripcion;
             $porcion->estado = "1";//Como se paga el mismo día de su creación, el estado es PAGADO
