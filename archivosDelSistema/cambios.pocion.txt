@@ -1,0 +1,7 @@
+cuota.php
+cuotacontroller.php
+
+
+basededatos
+porciones montot decimal(10,2) (campo en soles para calculos) campo neto
+porcion neta=pagoporciontotal*monto sininteres)/montoconinteres

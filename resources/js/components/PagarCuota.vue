@@ -313,6 +313,7 @@ export default {
                 }
                 //adolares
                  let montopagardolares=this.montoporcion/tipocambio
+                 
                  //monto de interes
                //  let pagoInteresPorcion=montopagardolares*(tasa/100)
                  //monto de cuta
@@ -326,7 +327,7 @@ export default {
                 axios.post('/cuota/porcion',{
                     'id':idcuota,
                     'monto': pagoCuotaProcion,
-                    'montot': montopagardolares,
+                    'montot': this.montoporcion,
                     'otroscostos': this.otroscostosporcion,
                     'descripcion': this.descpagoporcion
                 })

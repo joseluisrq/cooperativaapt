@@ -19572,7 +19572,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.post('/cuota/porcion', {
         'id': idcuota,
         'monto': pagoCuotaProcion,
-        'montot': montopagardolares,
+        'montot': this.montoporcion,
         'otroscostos': this.otroscostosporcion,
         'descripcion': this.descpagoporcion
       }).then(function (res) {
