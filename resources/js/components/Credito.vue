@@ -206,15 +206,42 @@
                                         $ {{cuotanuevo.monto}} 
                                      </td>
                                       <td >
-                                        $ {{ ((interesxCuota)-(cuotanuevo.monto*tasacredito)).toFixed(2)}}  
+                                        $ {{( 
+                                            (parseFloat(((cuotanuevo.monto*(parseFloat(montofijo)+
+                                            parseFloat(interesxCuota)))/montofijo)
+                                        
+                                        -parseFloat(cuotanuevo.monto))
+
+                                        )/arrayCredito[0].numerocuotas).toFixed(2)}}  
                                          <span class="badge badge-primary" style="font-size:12px;"> 
-                                             S/ {{
-                                                  (parseFloat(cuotanuevo.monto*tasacredito) * tipocambio).toFixed(2)	}}</span>
+                                             S/ 
+
+                                             {{
+                                                  (((parseFloat(((cuotanuevo.monto*(parseFloat(montofijo)+parseFloat(interesxCuota)))/montofijo)
+                                        
+                                        -parseFloat(cuotanuevo.monto))
+
+                                        )/arrayCredito[0].numerocuotas)* tipocambio).toFixed(2)	}}</span>
                                      </td>
                                       <td >
-                                        $ {{((parseFloat(cuotanuevo.monto)+parseFloat(cuotanuevo.monto*tasacredito))).toFixed(2)}} 
+                                        $ {{
+                                            (parseFloat(cuotanuevo.monto)
+                                            +(((parseFloat(((cuotanuevo.monto*(parseFloat(montofijo)+parseFloat(interesxCuota)))/montofijo)
+                                        
+                                        -parseFloat(cuotanuevo.monto))
+
+                                        )/arrayCredito[0].numerocuotas))).toFixed(2)
+                                        }}
+                                        
                                           <span class="badge badge-primary" style="font-size:12px;"> 
-                                             S/ {{ ((parseFloat(cuotanuevo.monto)+parseFloat(cuotanuevo.monto*tasacredito)) * tipocambio).toFixed(2)	}}</span>
+                                             S/ {{ (
+                                                  (parseFloat(cuotanuevo.monto)+(((parseFloat(((cuotanuevo.monto*(parseFloat(montofijo)+parseFloat(interesxCuota)))/montofijo)
+                                        
+                                        -parseFloat(cuotanuevo.monto))
+
+                                        )/arrayCredito[0].numerocuotas))
+                                             ) 
+                                             * tipocambio).toFixed(2)	}}</span>
                                      </td>
                                    
                                      
@@ -254,13 +281,13 @@
                                                     porcion.monto}}    <span class="badge badge-outline-primary" style="font-size:12px;"> S/ {{ parseFloat(porcion.monto * tipocambio).toFixed(2)}}</span></td>
                                                
                                                 <td class="text-primary">
-                                                 S/ {{((porcion.monto*arrayCredito[0].tasa)/(100-arrayCredito[0].tasa)*tipocambio).toFixed(2)}}  
+                                                 S/ {{
+                                                        (parseFloat( porcion.montot)-parseFloat(porcion.monto*tipocambio)).toFixed(2)
+                                                 }}
                                                 </td>
                                                  <td class="text-primary">S/  {{
                                                      
-                                                     
-                                                      (parseFloat(porcion.monto*tipocambio)+((porcion.monto*arrayCredito[0].tasa)/(100-arrayCredito[0].tasa)*tipocambio)).toFixed(1)
-                                                      
+                                                     porcion.montot
                                                       }}
                                                     
                                                  </td>

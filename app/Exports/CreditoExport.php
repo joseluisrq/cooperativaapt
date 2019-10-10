@@ -39,7 +39,7 @@ class CreditoExport implements FromView
              ->where ('creditos.estado', '<>', '0')       
             ->select(
                 'cuotas.monto',
-                'cuotas.idcredito',
+                'cuotas.idcredito'
              )
             
              ->get() ,

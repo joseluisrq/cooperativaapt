@@ -55,7 +55,8 @@
                    
                     <br>INTERES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: S/
                     <?php
-                      $int=round((($c->pmonto*$c->tasa)/(100-$c->tasa)*$c->tipocambio),2);
+                   
+                      $int=round((($c->montototalsoles)-( $c->pmonto*$c->tipocambio)),2);
                       echo $int
                     ?>
                     <br>OTROS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -64,7 +65,7 @@
                      
                     <br>TOTAL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: S/
                     {{round(
-                     ($c->pmonto*$c->tipocambio)+($int)+$c->potroscostos
+                     ($c->montototalsoles)+$c->potroscostos
                       ,1)
                     }} 
   
@@ -89,51 +90,52 @@
                   <div class="coupon">
                    
                    
-                   <div class="container" style="background-color:white">
-                      <p> APT del Norte &nbsp;&nbsp;  RUC: 20495964214</p>
+                    <div class="container" style="background-color:white">
+                        <p> APT del Norte &nbsp;&nbsp;  RUC: 20495964214</p>
                        
+                      
+                    <p>NRO OPERACIÓN: {{$c->id}} -  {{$c->numerocuota}} -{{$c->idporcion}}
+                    <br> {{$c->pfechacancelacion}}
+                     <br>DNI SOCIO  : {{$c->dni}}
+                    <br>{{$c->nombre}} {{$c->apellidopaterno}} {{$c->apellidomaterno}}
+                    <br>Obs: {{$c->pdescripcion}}
+                    <br>N° CRED: {{$c->numeroprestamo}}
+                    <br>PROD.CRED:CREDITO CONGARANTIA LIQUIDA/PLAZO</p>
+                    <p>SALDO ANTERIOR N: $  {{$c->saldopendiente + $c->monto+$c->pmonto}} 
+                    <br>MONTO A PAGAR N: S/ {{round((($c->pmonto))*($c->tipocambio),2)}}
+                   
+                    <br>INTERES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: S/
+                    <?php
+                   
+                      $int=round((($c->montototalsoles)-( $c->pmonto*$c->tipocambio)),2);
+                      echo $int
+                    ?>
+                    <br>OTROS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                     S/ {{$c->potroscostos}}
                      
-                   <p>NRO OPERACIÓN: {{$c->id}} -  {{$c->numerocuota}} -{{$c->idporcion}}
-                   <br> {{$c->pfechacancelacion}}
-                    <br>DNI SOCIO  : {{$c->dni}}
-                   <br>{{$c->nombre}} {{$c->apellidopaterno}} {{$c->apellidomaterno}}
-                   <br>Obs: {{$c->pdescripcion}}
-                   <br>N° CRED: {{$c->numeroprestamo}}
-                   <br>PROD.CRED:CREDITO CONGARANTIA LIQUIDA/PLAZO</p>
-                   <p>SALDO ANTERIOR N: $  {{$c->saldopendiente + $c->monto+$c->pmonto}} 
-                   <br>MONTO A PAGAR N: S/ {{round((($c->pmonto))*($c->tipocambio),2)}}
-                  
-                   <br>INTERES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: S/
-                   <?php
-                     $int=round((($c->pmonto*$c->tasa)/(100-$c->tasa)*$c->tipocambio),2);
-                           echo $int
-                   ?>
-                   <br>OTROS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
-                    S/ {{$c->potroscostos}}
-                    
-                   <br>TOTAL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: S/
-                   {{round(
-                    ($c->pmonto*$c->tipocambio)+($int)+$c->potroscostos
-                     ,1)
-                   }} 
- 
-                     </p>
-                     <p>
-                        GRACIAS POR SU PREFERENCIA <br>
-                        USUARIO: {{$c->usuario}} &nbsp;&nbsp;PASN
+                    <br>TOTAL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: S/
+                    {{round(
+                     ($c->montototalsoles)+$c->potroscostos
+                      ,1)
+                    }} 
+  
+                      </p>
+                      <p>
+                         GRACIAS POR SU PREFERENCIA <br>
+                         USUARIO: {{$c->usuario}} &nbsp;&nbsp;PASN
 
-                         
-                     </p>
-                     <p>
-                       DOC.IDE ..........................FIRMA...............................
-                                            
-                     </p>
-                   
-                   
-                   </div>
-                 
-                 </div>
+                          
+                      </p>
+                      <p>
+                        DOC.IDE ..........................FIRMA...............................
+                                             
+                      </p>
+                    
+                    
+                    </div>
+                  
+                  </div>
             @endforeach
     </body>
 </html>

@@ -335,7 +335,7 @@
                                     <td >
                                         $ {{ (parseFloat(cuotanuevo.monto)+parseFloat(interesporcuota)).toFixed(2)}} 
                                         <span class="badge badge-primary" style="font-size: 12px;"> 
-                                    S/. {{ ((parseFloat(cuotanuevo.monto)+parseFloat(interesporcuota))*tipocambio).toFixed(2)}}</span>
+                                    S/. {{ ((parseFloat(cuotanuevo.monto)+parseFloat(interesporcuota))*arrayCredito[0].tipocambio).toFixed(2)}}</span>
                                     </td>
                                     
                                

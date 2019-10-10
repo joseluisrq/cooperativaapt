@@ -103,7 +103,7 @@ td, th {
             <p>
                 ID PRESTAMO :  {{$c->numeroprestamo}}<br>
                 ID CLIENTE:  {{$c->dni}}<br>
-                ID KIVA:  {{$c->idkiva}}<br>
+                ID SM :  {{$c->idkiva}}<br>
             </p>
              <p>
                   Yo,  {{$c->nombre}}  {{$c->apellidopaterno}} {{$c->apellidomaterno}} con DNI  N° 

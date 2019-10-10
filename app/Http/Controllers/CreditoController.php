@@ -250,6 +250,7 @@ class CreditoController extends Controller
              'porciones.idporcion', 
              'porciones.fechacancelacion',
              'porciones.monto',
+             'porciones.montot',
              'porciones.otroscostos',
              'porciones.descripcion',
              'porciones.estado',
@@ -732,6 +733,7 @@ class CreditoController extends Controller
              'porciones.idporcion',
              'porciones.fechacancelacion as pfechacancelacion',
              'porciones.monto as pmonto',
+             'porciones.montot as montototalsoles',
              'porciones.otroscostos as potroscostos',
              'porciones.descripcion as pdescripcion',
  
@@ -785,17 +787,49 @@ class CreditoController extends Controller
         ->where('cuotas.fechapago','<',date('Y-m-d'))
         ->groupBy('cuotas.idcredito')        
         ->get();    
+
+        $creditosactualm = Credito::select('creditos.id')
+        ->where('creditos.estado','<>','0')
+        ->where('creditos.mora','=','1')   
+        ->get();  
     
 
         return
         [
-            "creditos"=>$creditos
+            "creditos"=>$creditos,
+            "creditosactualm"=>$creditosactualm
         ];
      }
 
      public function porMorosos(Request $request)
      {
-       
+        
+       $creditoMor = Credito::
+        select('creditos.id')
+        ->where('creditos.estado','<>','0')
+        ->where('creditos.mora','=','1')   
+        ->get();  
+        
+         foreach($creditoMor as $ap=>$mor)
+         {  
+            try{
+                DB::beginTransaction();              
+                $credi = Credito::findOrFail($mor['id']);
+                $credi->mora = '0'; //con mora
+                $credi->save();                          
+                
+     
+                DB::commit();
+     
+            } catch (Exception $e){
+                DB::rollBack();
+            }
+            
+          
+         }  
+
+
+
          $cuotas = $request->data;
          foreach($cuotas as $ep=>$cuot)
          {  

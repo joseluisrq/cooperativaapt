@@ -49,7 +49,7 @@ class CreditoBitacoraController extends Controller
             'personas.apellidopaterno',
 
             'creditos_bitacora.condicion',
-            'creditos_bitacora.fechacambio',
+            'creditos_bitacora.fechacambio'
             
                       
             )

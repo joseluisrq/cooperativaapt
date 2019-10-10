@@ -14,6 +14,7 @@ class Persona extends Model
     'apellidomaterno ',
     'fechanacimiento ',
     'direccion  ',
+    'descripcion',
     'telefono  ',
     'email  ',
     'estado '];

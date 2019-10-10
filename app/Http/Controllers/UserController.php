@@ -34,6 +34,7 @@ class UserController extends Controller
                 'users.condicion',
                 'users.idrol',
                 'roles.nombre as rol')
+                ->where('users.condicion', '=', 1)   
             ->orderBy('personas.id', 'desc')->paginate(10);
         }
         else{
@@ -53,7 +54,8 @@ class UserController extends Controller
                 'users.password',
                 'users.condicion',
                 'users.idrol',
-                'roles.nombre as rol')           
+                'roles.nombre as rol')   
+                ->where('users.condicion', '=', 1)        
             ->where('personas.'.$criterio, 'like', '%'. $buscar . '%')
             ->orderBy('personas.id', 'desc')->paginate(10);
         }
