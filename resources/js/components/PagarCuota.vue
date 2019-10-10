@@ -200,7 +200,8 @@ export default {
 
                 totalpagar:0.0,
                 interes:0.0,
-
+                 montodesembolsado:0.0,
+                 tasadeinteres:0,
                 descpagocuota:'',
 
                 //datos del cliente
@@ -218,6 +219,9 @@ export default {
                  btnboucher:1, //1cuota //2 porcioncuota
 
                  montoanterior:0,
+
+
+                
 
             }
             
@@ -238,8 +242,17 @@ export default {
                     .then(res => {
                     this.dataC = res.data.cuotas;
                     me.interes=me.dataC[0].monto*(me.dataC[0].tasa/100);
+                     me.tasadeinteres=me.dataC[0].tasa/100;
+                     me.montodesembolsado=
+                    (parseFloat(me.dataC[0].montodesembolsado)
+                    +parseFloat(me.dataC[0].montodesembolsado*me.tasadeinteres)).toFixed(2);
                    // me.montoanterior=me.dataC[0].montodesembolsado/me.dataC[0].numerocuotas
                     me.totalpagar=(((parseFloat(me.dataC[0].monto)+parseFloat(me.interes))*me.dataC [0].tipocambio)).toFixed(2);
+
+
+                   /* 
+*/
+                   
                      })
                     .catch(err => {
                         console.log(err);
@@ -287,7 +300,7 @@ export default {
 
             //pagar porcion cuota
             pagarPorcionCuota(idcuota,tipocambio,tasa){
-
+                let me=this;
                 if(this.montoporcion == 0){
                     Swal.fire({
                     title: 'Debe ingresar un monto mayor a cero',
@@ -300,15 +313,21 @@ export default {
                 }
                 //adolares
                  let montopagardolares=this.montoporcion/tipocambio
+                 
                  //monto de interes
-                 let pagoInteresPorcion=montopagardolares*(tasa/100)
+               //  let pagoInteresPorcion=montopagardolares*(tasa/100)
                  //monto de cuta
-                 let pagoCuotaProcion=montopagardolares-pagoInteresPorcion;
+                // let pagoCuotaProcion=montopagardolares-pagoInteresPorcion;
+
+
+                 
+                 let pagoCuotaProcion=(montopagardolares*me.dataC[0].montodesembolsado)/(me.montodesembolsado)
                
                
                 axios.post('/cuota/porcion',{
                     'id':idcuota,
                     'monto': pagoCuotaProcion,
+                    'montot': this.montoporcion,
                     'otroscostos': this.otroscostosporcion,
                     'descripcion': this.descpagoporcion
                 })

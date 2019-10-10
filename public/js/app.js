@@ -18485,6 +18485,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['ruta'],
@@ -18521,7 +18522,8 @@ __webpack_require__.r(__webpack_exports__);
       enviaridcliente: 0,
       verpago: false,
       estadodelcredito: 0,
-      idcreditoaxiliar: 0
+      idcreditoaxiliar: 0,
+      tasacredito: 0
     };
   },
   components: {
@@ -18614,11 +18616,12 @@ __webpack_require__.r(__webpack_exports__);
         var respuesta = response.data;
         me.arrayCredito = respuesta.creditos;
         me.arrayCuotasnuevo = respuesta.cuotas;
-        me.interesxCuota = me.arrayCredito[0].montodesembolsado * (me.arrayCredito[0].tasa / 100) / me.arrayCredito[0].numerocuotas;
+        me.interesxCuota = me.arrayCredito[0].montodesembolsado * (me.arrayCredito[0].tasa / 100);
         me.tipocambio = me.arrayCredito[0].tipocambio;
         me.enviaridcliente = me.arrayCredito[0].idcliente;
         me.estadodelcredito = me.arrayCredito[0].estado;
         me.idcreditoaxiliar = me.arrayCredito[0].id;
+        me.tasacredito = me.arrayCredito[0].tasa / 100;
         me.montofijo = (me.arrayCredito[0].montodesembolsado / me.arrayCredito[0].numerocuotas).toFixed(2);
         me.listado = 0; // me.listarCuotas(idkiva)
         // me.listarPorciones();
@@ -19470,6 +19473,8 @@ __webpack_require__.r(__webpack_exports__);
       //detalle de cuota
       totalpagar: 0.0,
       interes: 0.0,
+      montodesembolsado: 0.0,
+      tasadeinteres: 0,
       descpagocuota: '',
       //datos del cliente
       showpagoporcion: false,
@@ -19493,9 +19498,13 @@ __webpack_require__.r(__webpack_exports__);
       var me = this;
       axios.get('/cuota/detallepagar?id=' + this.idcliente).then(function (res) {
         _this.dataC = res.data.cuotas;
-        me.interes = me.dataC[0].monto * (me.dataC[0].tasa / 100); // me.montoanterior=me.dataC[0].montodesembolsado/me.dataC[0].numerocuotas
+        me.interes = me.dataC[0].monto * (me.dataC[0].tasa / 100);
+        me.tasadeinteres = me.dataC[0].tasa / 100;
+        me.montodesembolsado = (parseFloat(me.dataC[0].montodesembolsado) + parseFloat(me.dataC[0].montodesembolsado * me.tasadeinteres)).toFixed(2); // me.montoanterior=me.dataC[0].montodesembolsado/me.dataC[0].numerocuotas
 
         me.totalpagar = ((parseFloat(me.dataC[0].monto) + parseFloat(me.interes)) * me.dataC[0].tipocambio).toFixed(2);
+        /* 
+        */
       })["catch"](function (err) {
         console.log(err);
       });
@@ -19540,6 +19549,8 @@ __webpack_require__.r(__webpack_exports__);
     pagarPorcionCuota: function pagarPorcionCuota(idcuota, tipocambio, tasa) {
       var _this3 = this;
 
+      var me = this;
+
       if (this.montoporcion == 0) {
         Swal.fire({
           title: 'Debe ingresar un monto mayor a cero',
@@ -19553,13 +19564,15 @@ __webpack_require__.r(__webpack_exports__);
 
 
       var montopagardolares = this.montoporcion / tipocambio; //monto de interes
+      //  let pagoInteresPorcion=montopagardolares*(tasa/100)
+      //monto de cuta
+      // let pagoCuotaProcion=montopagardolares-pagoInteresPorcion;
 
-      var pagoInteresPorcion = montopagardolares * (tasa / 100); //monto de cuta
-
-      var pagoCuotaProcion = montopagardolares - pagoInteresPorcion;
+      var pagoCuotaProcion = montopagardolares * me.dataC[0].montodesembolsado / me.montodesembolsado;
       axios.post('/cuota/porcion', {
         'id': idcuota,
         'monto': pagoCuotaProcion,
+        'montot': this.montoporcion,
         'otroscostos': this.otroscostosporcion,
         'descripcion': this.descpagoporcion
       }).then(function (res) {
@@ -62156,9 +62169,11 @@ var render = function() {
                                                 _vm._v(
                                                   "\n                                        $ " +
                                                     _vm._s(
-                                                      _vm.interesxCuota.toFixed(
-                                                        2
-                                                      )
+                                                      (
+                                                        _vm.interesxCuota -
+                                                        cuotanuevo.monto *
+                                                          _vm.tasacredito
+                                                      ).toFixed(2)
                                                     ) +
                                                     "  \n                                         "
                                                 ),
@@ -62177,7 +62192,8 @@ var render = function() {
                                                         _vm._s(
                                                           (
                                                             parseFloat(
-                                                              _vm.interesxCuota
+                                                              cuotanuevo.monto *
+                                                                _vm.tasacredito
                                                             ) * _vm.tipocambio
                                                           ).toFixed(2)
                                                         )
@@ -62195,7 +62211,8 @@ var render = function() {
                                                           cuotanuevo.monto
                                                         ) +
                                                         parseFloat(
-                                                          _vm.interesxCuota
+                                                          cuotanuevo.monto *
+                                                            _vm.tasacredito
                                                         )
                                                       ).toFixed(2)
                                                     ) +
@@ -62219,7 +62236,8 @@ var render = function() {
                                                               cuotanuevo.monto
                                                             ) +
                                                               parseFloat(
-                                                                _vm.interesxCuota
+                                                                cuotanuevo.monto *
+                                                                  _vm.tasacredito
                                                               )) *
                                                             _vm.tipocambio
                                                           ).toFixed(2)
@@ -80033,7 +80051,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\xampp\htdocs\sanmarcos\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp2\htdocs\cooperativaapt\resources\js\app.js */"./resources/js/app.js");
 
 
 /***/ })

@@ -206,14 +206,15 @@
                                         $ {{cuotanuevo.monto}} 
                                      </td>
                                       <td >
-                                        $ {{interesxCuota.toFixed(2)}}  
+                                        $ {{ ((interesxCuota)-(cuotanuevo.monto*tasacredito)).toFixed(2)}}  
                                          <span class="badge badge-primary" style="font-size:12px;"> 
-                                             S/ {{(parseFloat(interesxCuota) * tipocambio).toFixed(2)	}}</span>
+                                             S/ {{
+                                                  (parseFloat(cuotanuevo.monto*tasacredito) * tipocambio).toFixed(2)	}}</span>
                                      </td>
                                       <td >
-                                        $ {{((parseFloat(cuotanuevo.monto)+parseFloat(interesxCuota))).toFixed(2)}} 
+                                        $ {{((parseFloat(cuotanuevo.monto)+parseFloat(cuotanuevo.monto*tasacredito))).toFixed(2)}} 
                                           <span class="badge badge-primary" style="font-size:12px;"> 
-                                             S/ {{ ((parseFloat(cuotanuevo.monto)+parseFloat(interesxCuota)) * tipocambio).toFixed(2)	}}</span>
+                                             S/ {{ ((parseFloat(cuotanuevo.monto)+parseFloat(cuotanuevo.monto*tasacredito)) * tipocambio).toFixed(2)	}}</span>
                                      </td>
                                    
                                      
@@ -578,8 +579,10 @@ import vSelect from 'vue-select'
                 enviaridcliente:0,
                 verpago:false,
                 estadodelcredito:0,
-                idcreditoaxiliar:0
-            }
+                idcreditoaxiliar:0,
+
+                tasacredito:0
+                            }
         },
         components:{
             vSelect
@@ -676,11 +679,12 @@ import vSelect from 'vue-select'
                     var respuesta= response.data;
                     me.arrayCredito = respuesta.creditos;
                      me.arrayCuotasnuevo = respuesta.cuotas;
-                    me.interesxCuota=(me.arrayCredito[0].montodesembolsado*(me.arrayCredito[0].tasa/100))/me.arrayCredito[0].numerocuotas;
+                    me.interesxCuota=(me.arrayCredito[0].montodesembolsado*(me.arrayCredito[0].tasa/100));
                     me.tipocambio=me.arrayCredito[0].tipocambio;
                     me.enviaridcliente=me.arrayCredito[0].idcliente;
                     me.estadodelcredito=me.arrayCredito[0].estado;
                      me.idcreditoaxiliar=me.arrayCredito[0].id;
+                     me.tasacredito=me.arrayCredito[0].tasa/100;
                     
 
                     me.montofijo=(me.arrayCredito[0].montodesembolsado/me.arrayCredito[0].numerocuotas).toFixed(2);
